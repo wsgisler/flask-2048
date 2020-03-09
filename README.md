@@ -15,3 +15,10 @@ Alright, it isn't the nicest App and I was in a rush to write the code. But it i
 To my surprise, the approach to solve this game is not working tremendeously much better than my naive manual approach. And yes, you can guess it. Now I have a new problem: I'll need to improve the game strategy....
 
 Enjoy and feel free to use the code.
+
+## Screenshots
+
+![Before the start of the game](1.png)
+![Playing the game](2.png)
+![Playing the game](3.png)
+![Oops! I blew it.](4.png)
