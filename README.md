@@ -12,7 +12,7 @@ Why the hell would I use flask for this? Well, I am really into command line app
 
 Alright, it isn't the nicest App and I was in a rush to write the code. But it is functional. I can play the game and the game can play itself!
 
-I've included four strategies to play the game automatically. All of them work and get significantly better scores than if I play the game. Some of the moves are hard to understand as they might be preparing for a later move that at once gets rid of 5 or more tiles. Even though the strategies try to look at 9 moves in advance, it doesn't always manage to get to 2048, but many times it does.
+I've included four strategies to play the game automatically. All of them work and get significantly better scores than if I play the game myself. Some of the moves are hard to understand as they might be preparing for a later move that at once gets rid of 5 or more tiles. Even though the strategies is looking at 9 moves in advance, it doesn't always manage to get to 2048, but many times it does. Interestingly, the strategy that the algorithm is choosing is not at all similar to what a human would intuitively do (i.e. trying to put the biggest number in a corner).
 
 Enjoy and feel free to use the code.
 
