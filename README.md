@@ -16,9 +16,17 @@ To my surprise, the approach to solve this game is not working tremendeously muc
 
 Enjoy and feel free to use the code.
 
+## Running it
+
+To run the game, you just need to have flask installed (pip install flask) and then you just run python run.py
+After that, you can access the game in any webbrowser by typing http://localhost:5000/
+
 ## Screenshots
 
 ![Before the start of the game](1.png)
+
 ![Playing the game](2.png)
+
 ![Playing the game](3.png)
+
 ![Oops! I blew it.](4.png)
