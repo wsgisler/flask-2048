@@ -35,12 +35,12 @@ def add_next_number(grid):
             grid[row][col] = choice([2,4])
     return grid
     
-def render_grid(g, score, game_over = False, suggested_move = None):
+def render_grid(g, score, game_over = False, suggested_move = None, autoplay = False):
     gg = [["" if r == 0 else r for r in row] for row in g]
     return render_template('gui.html', r1c1 = gg[0][0], r1c2 = gg[0][1], r1c3 = gg[0][2], r1c4 = gg[0][3], 
                                        r2c1 = gg[1][0], r2c2 = gg[1][1], r2c3 = gg[1][2], r2c4 = gg[1][3], 
                                        r3c1 = gg[2][0], r3c2 = gg[2][1], r3c3 = gg[2][2], r3c4 = gg[2][3], 
-                                       r4c1 = gg[3][0], r4c2 = gg[3][1], r4c3 = gg[3][2], r4c4 = gg[3][3], grid_encoding = grid_to_grid_string(g), score = score, game_over = game_over, suggested_move = suggested_move)
+                                       r4c1 = gg[3][0], r4c2 = gg[3][1], r4c3 = gg[3][2], r4c4 = gg[3][3], grid_encoding = grid_to_grid_string(g), score = score, game_over = game_over, suggested_move = suggested_move, autoplay = autoplay)
                                        
 def move_grid(g, direction, current_score):
     score = current_score
@@ -159,14 +159,18 @@ def suggest_move(original, num_simulations, depth):
     total_score = {d:0 for d in directions}
     total_deaths = {d:0 for d in directions}
     expected_empty = {d:0 for d in directions}
+    min_number_moves_to_kill = {d:1000 for d in directions}
     for direction in directions:
         griddd = deepcopy(original)
         score = 0
         gridd, score = move_grid(griddd, direction, score)
+        gridd = deepcopy(gridd)
         if grid_to_grid_string(gridd) != grid_to_grid_string(original):
-            grid = add_next_number(gridd)
             for i in range(num_simulations):
+                grid = deepcopy(gridd)
+                grid = add_next_number(grid)
                 d = 1
+                deathcount = depth
                 while(d <= depth):
                     dir = choice(['up','down','right','left'])
                     prev_encoding = grid_to_grid_string(grid)
@@ -178,18 +182,23 @@ def suggest_move(original, num_simulations, depth):
                         break
                     if game_over(grid):
                         total_deaths[direction] += 1
+                        deathcount = d
                         break
+                min_number_moves_to_kill[direction]
                 total_score[direction] += score
+                min_number_moves_to_kill[direction] = min(min_number_moves_to_kill[direction], deathcount)
                 expected_empty[direction] += count_empty(grid)
-    print(total_score)
-    print(total_deaths)
-    print(max(total_score, key=total_score.get))
     for key in total_deaths:
         if total_deaths[key] == 0:
             total_deaths[key] = 10000000000000000
-    print(min(total_deaths, key=total_deaths.get))
-    print(max(expected_empty, key=expected_empty.get))
-    return max(expected_empty, key=expected_empty.get)
+    for key in min_number_moves_to_kill:
+        if min_number_moves_to_kill[key] == 1000:
+            min_number_moves_to_kill[key] = 0
+    # Now we have to use one of the strategies
+    #return min(total_deaths, key=total_deaths.get)
+    return max(total_score, key=total_score.get)
+    #return max(min_number_moves_to_kill, key=min_number_moves_to_kill.get)
+    #return max(expected_empty, key=expected_empty.get)
 
 @app.route('/')
 def index():
@@ -204,10 +213,21 @@ def move(direction, last_encoding, score):
     grid, score = move_grid(grid, direction, score)
     if last_encoding != grid_to_grid_string(grid):
         grid = add_next_number(grid)
-    suggested_move = suggest_move(grid, 1000, 9)
+    suggested_move = suggest_move(grid, 200, 9)
     if game_over(grid):
         return render_grid(grid, score, True, suggested_move)
     return render_grid(grid, score, False, suggested_move)
+    
+@app.route('/autoplay/<string:direction>/<string:last_encoding>/<int:score>/')
+def automove(direction, last_encoding, score):
+    grid = grid_string_to_grid(last_encoding)
+    grid, score = move_grid(grid, direction, score)
+    if last_encoding != grid_to_grid_string(grid):
+        grid = add_next_number(grid)
+    suggested_move = suggest_move(grid, 200, 9)
+    if game_over(grid):
+        return render_grid(grid, score, True, suggested_move)
+    return render_grid(grid, score, False, suggested_move, autoplay = True)
     
 if __name__ == "__main__":
     app.run(debug=False, port = 5000, host = "0.0.0.0")

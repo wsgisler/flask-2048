@@ -1,5 +1,8 @@
 <html>
     <head>
+        {% if autoplay%}
+            <meta http-equiv = "refresh" content = "1; url = /autoplay/{{ suggested_move }}/{{ grid_encoding }}/{{ score }}/" />
+        {% endif %}
         <style>
             #main { 
 			    position: absolute; 
@@ -226,7 +229,10 @@
 			<div id="right"><a href="/move/right/{{ grid_encoding }}/{{ score}}/">RIGHT</a></div>
 			<div id="down"><a href="/move/down/{{ grid_encoding }}/{{ score}}/">DOWN</a></div>
 			<div id="left"><a href="/move/left/{{ grid_encoding }}/{{ score}}/">LEFT</a></div>
-			<div id="suggested_move">Suggested Move: <a href="/move/{{ suggested_move }}/{{ grid_encoding }}/{{ score }}/">{{ suggested_move }}</a></div>
+			<div id="suggested_move">
+			    Suggested Move: <a href="/move/{{ suggested_move }}/{{ grid_encoding }}/{{ score }}/">{{ suggested_move }}</a><br>
+			    <a href="/autoplay/{{ suggested_move }}/{{ grid_encoding }}/{{ score }}/">Autoplay</a>
+			</div>
 		{% else %}
 		    <div id="game_over">Game Over!</div>
 		{% endif %}

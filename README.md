@@ -12,7 +12,7 @@ Why the hell would I use flask for this? Well, I am really into command line app
 
 Alright, it isn't the nicest App and I was in a rush to write the code. But it is functional. I can play the game and the game can play itself!
 
-To my surprise, the approach to solve this game is not working tremendeously much better than my naive manual approach. And yes, you can guess it. Now I have a new problem: I'll need to improve the game strategy....
+I've included four strategies to play the game automatically. All of them work and get significantly better scores than if I play the game. Some of the moves are hard to understand as they might be preparing for a later move that at once gets rid of 5 or more tiles. Even though the strategies try to look at 9 moves in advance, it doesn't always manage to get to 2048, but many times it does.
 
 Enjoy and feel free to use the code.
 
@@ -21,12 +21,14 @@ Enjoy and feel free to use the code.
 To run the game, you just need to have flask installed (pip install flask) and then you just run python run.py
 After that, you can access the game in any webbrowser by typing http://localhost:5000/
 
-## Screenshots
+## And here it is in action
+
+![Oops! I blew it.](animation.gif)
 
 ![Before the start of the game](1.png)
-
-![Playing the game](2.png)
 
 ![Playing the game](3.png)
 
 ![Oops! I blew it.](4.png)
+
+![The magic moment when I hit 2048](5.png)
